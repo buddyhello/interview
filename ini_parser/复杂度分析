@@ -1,0 +1,2 @@
+ INIParser::Parse 函数时间复杂度：O(n), 空间复杂度O(1)，无内存泄漏;
+ INIParser::Get函数时间复杂度：O(1), 空间复杂度O(1)，无内存泄漏;
