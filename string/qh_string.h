@@ -14,7 +14,6 @@ namespace qh
         string(const string& rhs);
 
         string& operator=(const string& rhs);
-
         //dtor
         ~string();
 
@@ -23,8 +22,10 @@ namespace qh
         const char* data() const;
         const char* c_str() const;
 
+        void print(void) const;
+
         // set & get
-        char* operator[](size_t index);
+        char operator[](size_t index);
 
     private:
         char*  data_;
@@ -33,5 +34,3 @@ namespace qh
 }
 
 #endif
-
-

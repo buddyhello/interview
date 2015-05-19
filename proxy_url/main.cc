@@ -41,7 +41,7 @@ void test_ProxUrlExtractor_Extract1()
     for (size_t i = 0; i < H_ARRAY_SIZE(test_data); i++)
     {
         if (ProxyURLExtractor::Extract(keys, test_data[i][0]) != test_data[i][1]) {
-            //fprintf(stderr, "test failed [%s]\n", test_data[i][0].data());
+            fprintf(stderr, "test failed [%s]\n", test_data[i][0].data());
             all_test_ok = false;
             assert(false);
         }
@@ -121,7 +121,9 @@ void test_ProxUrlExtractor_Extract2()
         {"http://www.microsofttranslator.com/bv.aspx?from=&to=zh-chs&query=http://hnujug.com/", "http://hnujug.com/"},
         {"http://translate.baiducontent.com/transpage?cb=translateCallback&ie=utf8&source=url&query=cdmaw.com&from=en&to=zh&token=&monLang=zh", "cdmaw.com"},
         {"http://fanyi.baidu.com/transpage?url=http%3A%2F%2Fwww.so.com&from=en&to=zh", "http%3A%2F%2Fwww.so.com"},
-        {"http://www.microsofttranslator.com/bv.aspx?from=&to=zh-chs&query=http://hnujug.com/&xxx=kvpair_token", "http://hnujug.com/"}
+        {"http://www.microsofttranslator.com/bv.aspx?from=&to=zh-chs&query=http://hnujug.com/&xxx=kvpair_token", "http://hnujug.com/"},
+        {"http://www.tmall.com/go/market/chaoshiPc/520-hb.php?spm=1.7274553.771.3.txTHt6&acm=tt-1097039-36355-3.1003.2.271176&aldid=bhxCQiFv&url=1003.2.tt-1097039-36355-3.OTHER_1430564606176_271176&pos=3", "1003.2.tt-1097039-36355-3.OTHER_1430564606176_271176"},
+        {"http://detail.tmall.com/item.htm?_u=o1tqj2jl2162&id=38763806661&ali_trackid=17_82e929da3bab7e298b09920b32adac45&query=1.7274553.1997520661.1.txTHt6", "1.7274553.1997520661.1.txTHt6"}
     };
 
 

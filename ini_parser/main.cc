@@ -14,7 +14,7 @@ void test1()
     const std::string& a = parser.Get("a", NULL);
     assert(a == "1");
 
-    std::string b = parser.Get("a", NULL);
+    std::string b = parser.Get("b", NULL);
     assert(b == "2");
 
     const std::string& c = parser.Get("c", NULL);
@@ -32,7 +32,7 @@ void test2()
     const std::string& a = parser.Get("a", NULL);
     assert(a == "1");
 
-    std::string b = parser.Get("a", NULL);
+    std::string b = parser.Get("b", NULL);
     assert(b == "2");
 
     const std::string& c = parser.Get("c", NULL);
@@ -50,11 +50,57 @@ void test3()
     const std::string& a = parser.Get("a", NULL);
     assert(a == "1");
 
-    std::string b = parser.Get("a", NULL);
+    std::string b = parser.Get("b", NULL);
     assert(b == "2");
 
     const std::string& c = parser.Get("c", NULL);
     assert(c == "3");
+}
+
+void test4()
+{
+    const char* ini_text= "&&a=1&b=2&&c=3&&&d=4&&&&&"; 
+    qh::INIParser parser;
+    if (!parser.Parse(ini_text, strlen(ini_text), "&", "=")) {
+        assert(false);
+    }
+
+    const std::string& a = parser.Get("a", NULL);
+    assert(a == "1");
+
+    std::string b = parser.Get("b", NULL);
+    assert(b == "2");
+
+    const std::string& c = parser.Get("c", NULL);
+    assert(c == "3");
+
+    const std::string& d = parser.Get("d", NULL);
+    assert(d == "4");
+}
+
+
+void test5()
+{
+    const char* ini_text= "a:1???b:2?c:3?????d:4?????e:5???????"; 
+    qh::INIParser parser;
+    if (!parser.Parse(ini_text, strlen(ini_text), "?", ":")) {
+        assert(false);
+    }
+
+    const std::string& a = parser.Get("a", NULL);
+    assert(a == "1");
+
+    std::string b = parser.Get("b", NULL);
+    assert(b == "2");
+
+    const std::string& c = parser.Get("c", NULL);
+    assert(c == "3");
+
+    const std::string& d = parser.Get("d", NULL);
+    assert(d == "4");
+
+    const std::string& e = parser.Get("e", NULL);
+    assert(e == "5");
 }
 
 int main(int argc, char* argv[])
@@ -64,7 +110,8 @@ int main(int argc, char* argv[])
     test1();
     test2();
     test3();
-
+    test4();
+    test5();
     return 0;
 }
 

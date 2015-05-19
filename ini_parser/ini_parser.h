@@ -2,6 +2,7 @@
 #define QIHOO_INI_PARSER_H_
 
 #include <string>
+#include <map>
 
 namespace qh
 {
@@ -19,7 +20,7 @@ namespace qh
         //! \brief 解析一段形如INI格式的内存数据。
         //!   例如：ini_data="a:1||b:2||c:3"
         //!         调用<code>Parse(ini_data, ini_data_len, "||", ":")</code>即可解析出这段数据。
-        //!         解析完毕之后 
+        //!         解析完毕之后
         //!         Get("a")=="1" && Get("b")=="2" && Get("c")=="3"
         //! \param[in] - const char * ini_data
         //! \param[in] - size_t ini_data
@@ -32,13 +33,14 @@ namespace qh
         //! \param[in] - const std::string & key
         //! \param[in] - bool * found - 输出参数，true表明找到这个key
         //! \return - const std::string& - 返回的具体key对应的value
-        const std::string& Get(const std::string& key, bool* found);
+        const std::string Get(const std::string& key, bool* found);
 
-        const std::string& Get(const std::string& section, const std::string& key, bool* found);
+        const std::string Get(const std::string& section, const std::string& key, bool* found);
 
     private:
+    	//使用map保存键值对，方便查找
+        std::map<std::string, std::string> ini_map;
     };
 }
 
 #endif
-

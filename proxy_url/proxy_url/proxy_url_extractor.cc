@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include "tokener.h"
+#include <iostream>
 
 namespace qh
 {
@@ -100,6 +101,54 @@ namespace qh
     {
 #if 1
         //TODO 请面试者在这里添加自己的代码实现以完成所需功能
+        Tokener token(raw_url);
+        token.skipTo('?');
+        token.next();    //skip one char : '?'
+        while(token.current() == '?' || token.current() == '&'){  //skip the char : '?' and '&', for the instance '????&'
+            token.next();
+        }
+        std::string key, key_value;  //key_value include key ,'=', and value
+        while(!token.isEnd()){
+            const char *kstart = token.getCurReadPos();   
+            key_value = token.nextString('&');
+            const char *kend = token.getCurReadPos();
+            token.back(kend-kstart);     //move token.m_pCurPos back before
+            
+            if(!key_value.empty() && key_value.find('=') != std::string::npos){
+                key = token.nextString('=');
+                if (keys.find(key) != keys.end()){
+
+                    /**
+                    * case 1: 
+                    *  raw_url="http://www.microsofttranslator.com/bv.aspx?from=&to=zh-chs&a=http://hnujug.com/&xx=yy"
+                    *  sub_url="http://hnujug.com/"
+                    */
+                    sub_url = token.nextString('&');
+                }    
+            }else if(key_value.empty()){
+                const char* curpos = token.getCurReadPos();
+                int nreadable = token.getReadableSize();
+                if (nreadable > 0){    
+                    /**
+                    * case 2: 
+                    * raw_url="http://www.microsofttranslator.com/bv.aspx?from=&to=zh-chs&a=http://hnujug.com/"
+                    * sub_url="http://hnujug.com/"
+                    */
+                    assert(curpos);
+                    key_value.assign(curpos, nreadable);
+                    //if key_value don't have '=', just forget
+                    if(key_value.find('=') != std::string::npos){
+                        key = token.nextString('=');    //generate key
+                        if(keys.find(key) != keys.end()){  //find the key in keys
+                            size_t pos = key_value.find('=');
+                            sub_url.assign(key_value, pos + 1, key_value.size() - pos- 1);  //generate value
+                        }
+                    }
+                }
+            }
+            token.skipTo('&');
+            token.next();    //skip one char : '&'
+        }
 #else
         //这是一份参考实现，但在特殊情况下工作不能符合预期
         Tokener token(raw_url);
